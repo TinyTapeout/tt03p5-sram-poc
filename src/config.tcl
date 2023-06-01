@@ -11,6 +11,9 @@ set script_dir [file dirname [file normalize [info script]]]
 # - the list of source files
 source $::env(DESIGN_DIR)/user_config.tcl
 
+# override the default DEF file to add SRAM pins
+set ::env(FP_DEF_TEMPLATE) "$::env(DESIGN_DIR)/def/tt_block_1x1.def"
+
 # save some time
 set ::env(RUN_KLAYOUT_XOR) 0
 set ::env(RUN_KLAYOUT_DRC) 0
