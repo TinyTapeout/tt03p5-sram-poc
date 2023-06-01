@@ -23,7 +23,7 @@ VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitiv
 VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v
 
 # this gets copied in by the GDS action workflow
-VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/gate_level_netlist.v $(PWD)/../verilog/gl/RAM32.v
+VERILOG_SOURCES += $(PWD)/tb.v $(PWD)/gate_level_netlist.v $(PWD)/sky130_sram_2kbyte_1rw1r_32x512_8.v
 endif
 
 # TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
