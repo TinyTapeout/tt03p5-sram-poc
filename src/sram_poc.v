@@ -39,7 +39,7 @@ module tt_um_urish_sram_poc (
 
   assign ram_clk0 = clk;
   assign ram_csb0 = !rst_n;
-  assign ram_web0 = WE;
+  assign ram_web0 = !WE;
   assign ram_wmask0 = {WE3, WE2, WE1, WE0};
   assign ram_addr0 = {4'b0, addr[6:2]};
 
