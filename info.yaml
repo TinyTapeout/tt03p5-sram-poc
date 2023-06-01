@@ -42,7 +42,7 @@ documentation:
     - addr[3]
     - addr[4]
     - addr[5]
-    - addr[7]
+    - addr[6]
     - wen
 # A description of what the outputs do
   outputs:
