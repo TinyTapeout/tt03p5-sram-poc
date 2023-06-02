@@ -42,7 +42,7 @@ documentation:
     - addr[3]
     - addr[4]
     - addr[5]
-    - addr[6]
+    - bank_sel
     - wen
 # A description of what the outputs do
   outputs:
@@ -56,9 +56,9 @@ documentation:
     - out[7]
 # A description of what the bidirectional I/O pins do
   bidirectional:
-    - in[0]
-    - in[1]
-    - in[2]
+    - in[0] (when bank_sel = 0), addr[6] (when bank_sel = 1)
+    - in[1] (when bank_sel = 0), addr[7] (when bank_sel = 1) 
+    - in[2] (when bank_sel = 0), addr[8] (when bank_sel = 1)
     - in[3]
     - in[4]
     - in[5]

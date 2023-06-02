@@ -11,7 +11,8 @@ module tb (
     input clk,
     input rst_n,
     input ena,
-    input [6:0] addr,
+    input [5:0] addr,
+    input bank_sel,
     input we,
     input [7:0] data_in,
     output [7:0] bidirectional_is_output,
@@ -52,7 +53,7 @@ module tb (
             .vccd1( 1'b1),
             .vssd1( 1'b0),
         `endif
-        .ui_in  ({we, addr}),
+        .ui_in  ({we, bank_sel, addr}),
         .uo_out (data_out),
         .uio_in (data_in),
         .uio_oe (bidirectional_is_output),

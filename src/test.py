@@ -10,6 +10,8 @@ async def test_sram_poc(dut):
 
     dut._log.info("ena")
     dut.ena.value = 1
+    dut.data_in.value = 0
+    dut.bank_sel.value = 0
 
     dut._log.info("reset")
     dut.rst_n.value = 0
@@ -87,5 +89,69 @@ async def test_sram_poc(dut):
     dut.addr.value = 8
     await ClockCycles(dut.clk, 2)
     assert int(dut.data_out.value) == 0x55
+
+    dut._log.info("Switch to bank 3 and write a byte at addresses 10, 11")
+    dut.data_in.value = 3
+    dut.bank_sel.value = 1
+    await ClockCycles(dut.clk, 1)
+
+    dut.bank_sel.value = 0
+    dut.addr.value = 10
+    dut.data_in.value = 0xbb
+    dut.we.value = 1
+    await ClockCycles(dut.clk, 1)
+
+    dut.bank_sel.value = 0
+    dut.addr.value = 11
+    dut.data_in.value = 0xcc
+    dut.we.value = 1
+    await ClockCycles(dut.clk, 1)
+
+    dut._log.info("read back the bytes and verify they are correct")
+    dut.data_in.value = 0
+    dut.addr.value = 10
+    dut.we.value = 0
+    await ClockCycles(dut.clk, 2)
+    assert int(dut.data_out.value) == 0xbb
+
+    dut._log.info("Switch to bank 0 and verify the byte at address 10 is still correct")
+
+    dut.data_in.value = 0
+    dut.bank_sel.value = 1
+    await ClockCycles(dut.clk, 1)
+
+    dut.bank_sel.value = 0
+    dut.addr.value = 10
+    await ClockCycles(dut.clk, 2)
+    assert int(dut.data_out.value) == 0xaa
+
+    dut._log.info("Bank select and read back the byte at addresses 11, 10")
+    dut.data_in.value = 3
+    dut.bank_sel.value = 1
+    dut.addr.value = 11
+    await ClockCycles(dut.clk, 2)
+    assert int(dut.data_out.value) == 0xcc
+
+    dut.bank_sel.value = 0
+    dut.data_in.value = 0
+    dut.addr.value = 10
+    await ClockCycles(dut.clk, 2)
+    assert int(dut.data_out.value) == 0xbb
+
+    dut._log.info("Chaning the bank while bank_sel is high and verify the data")
+
+    dut.data_in.value = 0
+    dut.bank_sel.value = 1
+    dut.addr.value = 10
+    await ClockCycles(dut.clk, 2)
+    assert int(dut.data_out.value) == 0xaa
+
+    dut.data_in.value = 3
+    await ClockCycles(dut.clk, 2)
+    assert int(dut.data_out.value) == 0xbb
+
+    dut.data_in.value = 0
+    await ClockCycles(dut.clk, 2)
+    assert int(dut.data_out.value) == 0xaa
 
     dut._log.info("all good!")

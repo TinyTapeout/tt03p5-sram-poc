@@ -1,33 +1,37 @@
 [*]
 [*] GTKWave Analyzer v3.3.103 (w)1999-2019 BSI
-[*] Thu Jun  1 22:29:48 2023
+[*] Fri Jun  2 18:54:23 2023
 [*]
 [dumpfile] "/home/uri/p/tt03p5-sram-poc/src/tb.vcd"
-[dumpfile_mtime] "Thu Jun  1 22:26:07 2023"
-[dumpfile_size] 3825
+[dumpfile_mtime] "Fri Jun  2 18:54:15 2023"
+[dumpfile_size] 9889
 [savefile] "/home/uri/p/tt03p5-sram-poc/src/tb.gtkw"
 [timestart] 0
-[size] 1278 600
+[size] 1908 999
 [pos] -1 -1
-*-25.233273 83900000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-25.737482 112600000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] tb.
 [sst_width] 214
-[signals_width] 150
+[signals_width] 212
 [sst_expanded] 1
-[sst_vpaned_height] 152
+[sst_vpaned_height] 293
 @28
 tb.clk
 tb.ena
 @22
-tb.addr[6:0]
+tb.addr[5:0]
 @28
+tb.bank_sel
 tb.we
 @22
 tb.data_in[7:0]
-@23
 tb.data_out[7:0]
 @200
 -
+@29
+tb.sramctrl.addr_high_reg[2:0]
+@22
+tb.sramctrl.addr[8:0]
 @28
 tb.ram_clk0
 @22
