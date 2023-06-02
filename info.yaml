@@ -22,17 +22,30 @@ yaml_version: 3.5
 # Here is a great example: https://github.com/davidsiaw/tt02-davidsiaw-stackcalc/blob/38c5647f83aad2aec675d566aa3d67b98f0aac81/info.yaml
 documentation: 
   author:       "Uri Shaked"      # Your name
-  title:        "SRAM Controller PoC (128 bytes)"      # Project title
+  title:        "SRAM Controller PoC (2 kbyte)"      # Project title
   language:     "Verilog" # other examples include Verilog, Amaranth, VHDL, etc
-  description:  "128 bytes SRAM controller module"      # Short description of what your project does
+  description:  "2 kbyte SRAM controller module"      # Short description of what your project does
 
 # Longer description of how the project works. You can use standard markdown format.
   how_it_works: |
-      TODO
+      This is a 2 kbyte SRAM controller module. It allows reading or writing a single byte at a time. 
+      There are 9 address lines, 8 data lines, and 1 write enable line. 
+      To read a byte, set the write enable line (wen) to 0, and the data lines (out[7:0]) will be set to the value of the 
+      byte at the address specified by the address lines (addr[5:0]).
+      To write a byte, set the write enable line (wen) to 1, and set the data lines (in[7:0]) to the desired value. Writing is only possible
+      when the bank_sel line is 0.
+      The lower 6 address bits (addr[5:0]) are exposed as input pins. 
+      The upper 3 address lines are stored in the address_bank register. To change the upper 3 address bits,
+      set the bank_sel line to 1, and set the data lines (addr[8:6] or in[2:0]) to the desired value.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
-      TODO
+      Set addr[5:0] to the desired address, set in[7:0] to the desired value, set wen to 1, and set bank_sel to 0, then pulse
+      the clock line. The value at the specified address should be updated to the value of in[7:0].
+      Set addr[5:0] to the desired address, set wen to 0, and set bank_sel to 0, then pulse the clock line. The value at the specified
+      address should be output on out[7:0].
+      Set addr[8:6] to the desired value, set bank_sel to 1, then pulse the clock line. The upper 3 address bits should be updated to the
+      value of addr[8:6].
 
 # A description of what the inputs do
   inputs:               
@@ -67,7 +80,7 @@ documentation:
 
 # The following fields are optional
   tag:          "ram"      # comma separated list of tags: test encryption, experiment, clock, animation, utility, industrial, pwm, fpga, alu, microprocessor, risc, riscv, sensor, signal generator, fft, filter, music, bcd, sound, serial, timer, random number generator, calculator, decoder, counter, puzzle, multiplier, game, oscillator,
-  external_hw:  ""      # Describe any external hardware needed
+  external_hw:  "none"     # Describe any external hardware needed
   discord:      "urish#8086"      # Your discord handle, used for communication and automatically assigning tapeout role after a submission
   doc_link:     ""      # URL to longer form documentation, eg the README.md in your repository
   clock_hz:     0       # Clock frequency in Hz (if required)
