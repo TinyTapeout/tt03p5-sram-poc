@@ -1,6 +1,10 @@
 import cocotb
 from cocotb.clock import Clock
+from cocotb.binary import BinaryValue
 from cocotb.triggers import ClockCycles
+
+DATA_WIDTH = 8
+DATA_X = BinaryValue('X', n_bits=DATA_WIDTH)
 
 @cocotb.test()
 async def test_sram_poc(dut):
@@ -87,5 +91,49 @@ async def test_sram_poc(dut):
     dut.addr.value = 8
     await ClockCycles(dut.clk, 2)
     assert int(dut.data_out.value) == 0x55
+
+
+    dut._log.info("read pipeline back-to-back bytes and verify they are correct")
+    dut.data_in.value = DATA_X
+    dut.we.value = 0
+
+    dut.addr.value = 8
+    await ClockCycles(dut.clk, 1)
+
+    dut.addr.value = 9
+    await ClockCycles(dut.clk, 1)
+    #dut._log.info("addr(08) = {:x}".format(int(dut.data_out.value)))
+    assert int(dut.data_out.value) == 0x55, f"addr(08) != 0x55"
+
+    dut.addr.value = 10
+    await ClockCycles(dut.clk, 1)
+    #dut._log.info("addr(09) = {:x}".format(int(dut.data_out.value)))
+    assert int(dut.data_out.value) == 0x66, f"addr(09) != 0x66"
+
+    dut.addr.value = 11
+    await ClockCycles(dut.clk, 1)
+    #dut._log.info("addr(10) = {:x}".format(int(dut.data_out.value)))
+    assert int(dut.data_out.value) == 0xaa, f"addr(10) != 0xaa"
+
+    dut.addr.value = 8
+    await ClockCycles(dut.clk, 1)
+    #dut._log.info("addr(11) = {:x}".format(int(dut.data_out.value)))
+    assert int(dut.data_out.value) == 0x88, f"addr(11) != 0x88"
+
+    dut.addr.value = 9
+    await ClockCycles(dut.clk, 1)
+    assert int(dut.data_out.value) == 0x55, f"addr(08) != 0x55"
+
+    dut.addr.value = 10
+    await ClockCycles(dut.clk, 1)
+    assert int(dut.data_out.value) == 0x66, f"addr(09) != 0x66"
+
+    dut.addr.value = 11
+    await ClockCycles(dut.clk, 1)
+    assert int(dut.data_out.value) == 0xaa, f"addr(10) != 0xaa"
+
+    dut.addr.value = 0
+    await ClockCycles(dut.clk, 1)
+    assert int(dut.data_out.value) == 0x88, f"addr(11) != 0x88"
 
     dut._log.info("all good!")
