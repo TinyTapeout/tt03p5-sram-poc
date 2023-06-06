@@ -20,12 +20,13 @@ module tt_um_urish_sram_poc (
   input  [31:0] ram_dout0    // output data
 );
 
-  reg [2:0] addr_high_reg;
+  reg [4:0] addr_high_reg;
   wire bank_select = ui_in[6];
   wire [5:0] addr_low = ui_in[5:0];
-  wire [2:0] addr_high_in = uio_in[2:0];
-  wire [8:0] addr = {bank_select ? addr_high_in : addr_high_reg, addr_low};
-  wire [1:0] byte_index = ui_in[1:0];
+  wire [4:0] addr_high_in = uio_in[4:0];
+  wire [10:0] addr = {bank_select ? addr_high_in : addr_high_reg, addr_low};
+  wire [1:0] byte_index = addr[1:0];
+  wire [8:0] word_index = addr[10:2];
   
   assign uio_oe = 8'b0; // All bidirectional IOs are inputs
   assign uio_out = 8'b0;
@@ -45,7 +46,7 @@ module tt_um_urish_sram_poc (
   assign ram_csb0 = !rst_n;
   assign ram_web0 = !WE;
   assign ram_wmask0 = {WE3, WE2, WE1, WE0};
-  assign ram_addr0 = {4'b0, addr[6:2]};
+  assign ram_addr0 = word_index;
 
   always @(posedge clk)
   begin

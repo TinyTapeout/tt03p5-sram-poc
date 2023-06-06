@@ -113,11 +113,29 @@ async def test_sram_poc(dut):
     dut.we.value = 0
     await ClockCycles(dut.clk, 2)
     assert int(dut.data_out.value) == 0xbb
+    
+    dut._log.info("Switch to bank 16 and write a byte at addresses 10, 11")
+    dut.data_in.value = 16
+    dut.bank_sel.value = 1
+    await ClockCycles(dut.clk, 1)
+
+    dut.bank_sel.value = 0
+    dut.addr.value = 10
+    dut.data_in.value = 0x10
+    dut.we.value = 1
+    await ClockCycles(dut.clk, 1)
+
+    dut.bank_sel.value = 0
+    dut.addr.value = 11
+    dut.data_in.value = 0x11
+    dut.we.value = 1
+    await ClockCycles(dut.clk, 1)
 
     dut._log.info("Switch to bank 0 and verify the byte at address 10 is still correct")
 
     dut.data_in.value = 0
     dut.bank_sel.value = 1
+    dut.we.value = 0
     await ClockCycles(dut.clk, 1)
 
     dut.bank_sel.value = 0
